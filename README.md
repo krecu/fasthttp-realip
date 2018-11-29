@@ -1,6 +1,6 @@
-# RealIP
+# RealIP [fasthttp]
 
-[![GoDoc](https://godoc.org/github.com/tomasen/realip?status.svg)](http://godoc.org/github.com/tomasen/realip)
+[![GoDoc](https://godoc.org/github.com/krecu/fasthttp-realip?status.svg)](http://godoc.org/github.com/krecu/fasthttp-realip)
 
 Go package that can be used to get client's real public IP, which usually useful for logging HTTP server.
 
@@ -15,10 +15,10 @@ Go package that can be used to get client's real public IP, which usually useful
 ```go
 package main
 
-import "github.com/tomasen/realip"
+import "github.com/krecu/fasthttp-realip"
 
-func (h *Handler) ServeIndexPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	clientIP := realip.FromRequest(r)
+func RealIpHandler(ctx *fasthttp.RequestCtx) {
+	clientIP := realip.FromRequest(ctx)
 	log.Println("GET / from", clientIP)
 }
 ```
