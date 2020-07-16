@@ -51,7 +51,7 @@ func isPrivateAddress(address string) (bool, error) {
 }
 
 // FromHeader return client's real public IP address from http request headers.
-func FromHeader(req *fasthttp.Request) string {
+func FromHeader(req fasthttp.Request) string {
 	// Fetch header value
 	xRealIP := req.Header.Peek("X-Real-Ip")
 	xForwardedFor := req.Header.Peek("X-Forwarded-For")
