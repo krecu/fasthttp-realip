@@ -50,6 +50,25 @@ func isPrivateAddress(address string) (bool, error) {
 	return false, nil
 }
 
+// FromHeader return client's real public IP address from http request headers.
+func FromHeader(req *fasthttp.Request) string {
+	// Fetch header value
+	xRealIP := req.Header.Peek("X-Real-Ip")
+	xForwardedFor := req.Header.Peek("X-Forwarded-For")
+
+	// Check list of IP in X-Forwarded-For and return the first global address
+	for _, address := range strings.Split(string(xForwardedFor), ",") {
+		address = strings.TrimSpace(address)
+		isPrivate, err := isPrivateAddress(address)
+		if !isPrivate && err == nil {
+			return address
+		}
+	}
+
+	// If nothing succeed, return X-Real-IP
+	return string(xRealIP)
+}
+
 // FromRequest return client's real public IP address from http request headers.
 func FromRequest(ctx *fasthttp.RequestCtx) string {
 	// Fetch header value
